@@ -1,3 +1,5 @@
+import json
+import request_utils
 import endpoints_scripts
 
 def lambda_handler(event, context):
@@ -10,6 +12,11 @@ def lambda_handler(event, context):
     # Each endpoint calls a function
     if mthd == 'GET' and path == '/services/scripts/getlicenses':
         resp = endpoints_scripts.get_licenses()
+
+    elif mthd == 'POST' and path == '/services/scripts/getuserinfo':
+        username = request_utils.post_mfd_parameter(event, 'username')
+        password = request_utils.post_mfd_parameter(event, 'password')
+        resp = endpoints_scripts.get_user_info(username, password)
 
     # Add headers to http response
     if 'headers' not in resp:
